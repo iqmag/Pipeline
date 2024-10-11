@@ -2,7 +2,7 @@ package main
 
 import (
 	"bufio"
-	"fmt"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -104,21 +104,21 @@ func dataSource() (<-chan int, <-chan struct{}) {
     go func() {
         defer close(done)
         scanner := bufio.NewScanner(os.Stdin)
-        fmt.Println("Введите целые числа. Для выхода введите 'exit':")
+        log.Println("Введите целые числа. Для выхода введите 'exit':")
 
         for {
             scanner.Scan()
             data := scanner.Text()
             if strings.EqualFold(data, "exit") {
                 close(c)
-                fmt.Println("Программа завершила работу!")
+                log.Println("Программа завершила работу!")
 
                 return
             }
 
             i, err := strconv.Atoi(data)
             if err != nil {
-                fmt.Println("Ошибка ввода, программа обрабатывает только целые числа!")
+                log.Println("Ошибка ввода, программа обрабатывает только целые числа!")
 
                 continue
             }
@@ -258,7 +258,7 @@ func consumer(done <-chan struct{}, c <-chan int) {
 
                 return
             }
-            fmt.Printf("Обработаны данные: %d\n", data)
+            log.Printf("Обработаны данные: %d\n", data)
         case <-done: // Если пришел сигнал завершения работы
 
             return
